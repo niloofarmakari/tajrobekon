@@ -1,2 +1,2 @@
-# Tajrobe Kon Platfrom - Experience Sharing Platform
+# Tajrobe Kon
 You can share your personal experiences and learn from others.
