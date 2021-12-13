@@ -9,8 +9,15 @@ https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/
 
 import os
 
-from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+configuration = os.getenv("ENVIRONMENT", "development").title()
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+os.environ.setdefault("DJANGO_CONFIGURATION", configuration)
+
+from configurations import importer  # noqa
+
+importer.install()
+
+from django.core.asgi import get_asgi_application  # noqa
 
 application = get_asgi_application()
