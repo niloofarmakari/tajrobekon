@@ -42,9 +42,11 @@ class Common(Configuration):
         #
         # Third-party apps
         "django_extensions",
+        "rest_framework",
         #
         # Local apps
         "apps.authentication",
+        "apps.experience",
     ]
 
     MIDDLEWARE = [
