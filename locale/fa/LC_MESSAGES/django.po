@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-18 00:41+0330\n"
+"POT-Creation-Date: 2021-12-18 13:08+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,34 +19,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid "Category Name"
-msgstr ""
+msgstr "نام دسته‌بندی"
 
 msgid "Category Description"
-msgstr ""
+msgstr "توضیحات دسته‌بندی"
 
 msgid "Free"
-msgstr ""
+msgstr "آزاد"
 
 msgid "Quote"
-msgstr ""
+msgstr "نقل‌قول"
 
 msgid "Experience Type"
-msgstr ""
+msgstr "نوع تجربه"
 
 msgid "Author Name"
-msgstr ""
+msgstr "نام نویسنده"
 
 msgid "Experience Category"
-msgstr ""
+msgstr "دسته‌بندی تجربه"
 
 msgid "Experience Title"
-msgstr ""
+msgstr "عنوان تجربه"
 
 msgid "Experience Subtitle"
-msgstr ""
+msgstr "زیرعنوان تجربه"
 
 msgid "Experience Description"
-msgstr ""
+msgstr "توضیحات تجربه"
 
 msgid "Experience publish time"
-msgstr ""
+msgstr "تاریخ انتشار"
