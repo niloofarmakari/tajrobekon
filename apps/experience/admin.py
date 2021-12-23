@@ -1,12 +1,17 @@
 from django.contrib import admin
-from .models import Experience, ExperienceCategory
+from .models import Experience, ExperienceCategory, ExperienceComment
 
 
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ("title", "category")
+    pass
 
 
 @admin.register(ExperienceCategory)
-class ExperienceCateogryAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug")
+class ExperienceCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ExperienceComment)
+class ExperienceCommentAdmin(admin.ModelAdmin):
+    pass

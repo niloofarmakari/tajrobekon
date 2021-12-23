@@ -43,6 +43,7 @@ class Common(Configuration):
         # Third-party apps
         "django_extensions",
         "rest_framework",
+        "taggit",
         #
         # Local apps
         "apps.authentication",
