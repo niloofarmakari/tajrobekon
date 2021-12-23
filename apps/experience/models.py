@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from taggit.managers import TaggableManager
+
 
 # class TypeChoices(models.TextChoices):
 #     WORK = "work", _("Work")
@@ -51,7 +53,8 @@ class Experience(models.Model):
     subtitle = models.CharField(max_length=100, blank=True, default="", verbose_name=_("Experience Subtitle"))
     description = models.TextField(verbose_name=_("Experience Description"))
     create_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Experience publish time"))
-    # image = models.ImageField(upload_to="experience/images/", blank=True, verbose_name=_("Experience Image"))
+
+    tags = TaggableManager()
 
     def __str__(self):
         return self.title
