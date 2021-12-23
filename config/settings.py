@@ -132,6 +132,13 @@ class Common(Configuration):
     LOGIN_REDIRECT_URL = "/"
     LOGIN_REDIRECT_URL = "/"
 
+    REST_FRAMEWORK = {
+        "DEFAULT_AUTHENTICATION_CLASSES": [
+            "rest_framework_simplejwt.authentication.JWTAuthentication",
+            "rest_framework.authentication.SessionAuthentication",
+        ],
+    }
+
 
 class Development(Common):
     """
