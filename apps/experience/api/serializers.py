@@ -24,7 +24,7 @@ class ExperienceCommentSerializer(serializers.ModelSerializer):
 
 class ExperienceCategoryForeignKey(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
-        return ExperienceCategory.objects.filter(is_published=True)
+        return ExperienceCategory.objects.all()
 
 
 class ExperienceSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -41,10 +41,14 @@ class ExperienceDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     comments = ExperienceCommentSerializer(read_only=True, many=True)
+    schema = serializers.SerializerMethodField()
+
+    def get_schema(self, experience: Experience):
+        return experience.get_schema()
 
     class Meta:
         model = Experience
-        fields = ["id", "type", "category", "description", "tags", "user", "comments"]
+        fields = ["id", "type", "category", "description", "tags", "user", "comments", "schema"]
 
 
 class ExperienceCommentSerializer(serializers.ModelSerializer):
