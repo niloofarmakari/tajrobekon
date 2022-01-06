@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
 from taggit.serializers import TagListSerializerField, TaggitSerializer
@@ -44,7 +46,7 @@ class ExperienceDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     schema = serializers.SerializerMethodField()
 
     def get_schema(self, experience: Experience):
-        return experience.get_schema()
+        return json.dumps(experience.get_schema(), ensure_ascii=False)
 
     class Meta:
         model = Experience

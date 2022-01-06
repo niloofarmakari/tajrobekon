@@ -1,18 +1,14 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from taggit.managers import TaggableManager
 
 
 class ExperienceCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Category Name"))
     slug = models.SlugField(max_length=100, primary_key=True)
-    description = models.TextField(
-        default="",
-        blank=True,
-        verbose_name=_("Category Description"),
-    )
+    description = models.TextField(default="", blank=True, verbose_name=_("Category Description"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Experience publish time"))
 
     def __str__(self):
@@ -39,10 +35,7 @@ class Experience(models.Model):
         QUOTE = "quote", _("Quote")
 
     type = models.CharField(
-        max_length=10,
-        choices=TypeChoices.choices,
-        default=TypeChoices.FREE,
-        verbose_name=_("Experience Type"),
+        max_length=10, choices=TypeChoices.choices, default=TypeChoices.FREE, verbose_name=_("Experience Type")
     )
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     category = models.ForeignKey(ExperienceCategory, verbose_name=_("Experience Category"), on_delete=models.CASCADE)
@@ -64,9 +57,15 @@ class Experience(models.Model):
             "comment": [comment.get_schema() for comment in self.comments.all()],
         }
 
+    def get_similar(self):
+        vector = SearchVector("description", "tags__name", "category__name")
+        query = SearchQuery(self.description)
+        return Experience.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gt=0).order_by("-rank")
+
     class Meta:
         verbose_name = _("Experience")
         verbose_name_plural = _("Experiences")
+        ordering = ["-created_at"]
 
 
 class ExperienceComment(models.Model):
@@ -91,3 +90,4 @@ class ExperienceComment(models.Model):
     class Meta:
         verbose_name = _("Experience Comment")
         verbose_name_plural = _("Experience Comments")
+        ordering = ["-created_at"]
