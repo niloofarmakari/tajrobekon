@@ -44,6 +44,8 @@ class Common(Configuration):
         "django_extensions",
         "rest_framework",
         "taggit",
+        "graphene_django",
+        "cachalot",
         #
         # Local apps
         "apps.authentication",
@@ -89,18 +91,10 @@ class Common(Configuration):
     # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
     AUTH_PASSWORD_VALIDATORS = [
-        {
-            "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-        },
-        {
-            "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-        },
-        {
-            "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-        },
-        {
-            "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-        },
+        {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+        {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+        {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+        {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
     ]
 
     # Internationalization
@@ -139,6 +133,10 @@ class Common(Configuration):
         ],
     }
 
+    GRAPHENE = {"SCHEMA": "config.graphql.schema.schema"}
+
+    CACHALOT_UNCACHABLE_TABLES = ["experience_experiencecomment"]
+
 
 class Development(Common):
     """
@@ -153,6 +151,21 @@ class Development(Common):
 
     INSTALLED_APPS = Common.INSTALLED_APPS + ["debug_toolbar"]
     MIDDLEWARE = Common.MIDDLEWARE + ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+    DEBUG_TOOLBAR_PANELS = [
+        "debug_toolbar.panels.versions.VersionsPanel",
+        "debug_toolbar.panels.history.HistoryPanel",
+        "debug_toolbar.panels.timer.TimerPanel",
+        "debug_toolbar.panels.settings.SettingsPanel",
+        "debug_toolbar.panels.headers.HeadersPanel",
+        "debug_toolbar.panels.request.RequestPanel",
+        "debug_toolbar.panels.sql.SQLPanel",
+        "debug_toolbar.panels.templates.TemplatesPanel",
+        "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+        "cachalot.panels.CachalotPanel",
+        "debug_toolbar.panels.cache.CachePanel",
+        "debug_toolbar.panels.signals.SignalsPanel",
+    ]
 
 
 class Production(Common):
