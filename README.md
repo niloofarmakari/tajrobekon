@@ -2,13 +2,52 @@
 
 You can share your personal experiences and learn from others.
 
+An overview of primary models:
+
+![An overview of primary models](./docs/images/experience.png)
+
+## Install
+
+1. Install [python 3.9](https://python.org). (preferred platform: Linux)
+2. Install poetry:
+
+```
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+3. Install project dependencies:
+
+```
+poetry install
+```
+
+4. Install postgresql, create role and database.
+5. Create .env file:
+
+```
+cp .example.env .env
+```
+
+6. Run migrate
+
+```
+./manage.py migrate
+```
+
+7. Run development server
+
+```
+./manage.py runserver
+```
+
 ## Technical features
 
 -   Django 3.2
 -   Using [Poetry](https://github.com/python-poetry/poetry) for dependency management.
--   Development, Staging and Production settings with [django-configurations](https://django-configurations.readthedocs.org).
 -   Get value insight and debug information while on Development with [django-debug-toolbar](https://django-debug-toolbar.readthedocs.org).
 -   Collection of custom extensions with [django-extensions](http://django-extensions.readthedocs.org).
+-   A simple still powerful caching system using [django-cachalot](https://django-cachalot.readthedocs.io/)
+-   Graphql And RESTAPI endpoints using [graphene](https://docs.graphene-python.org/projects/django/en/latest/) and [Django REST framework](https://www.django-rest-framework.org/)
 
 ## Commands
 
@@ -24,4 +63,10 @@ django-admin makemessages -l fa -e txt,py,html --no-location
 
 ```
 django-admin compilemessages -l fa
+```
+
+### Generate Diagram
+
+```
+python manage.py graph_models experience -o docs/images/experience.png
 ```
