@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+
 from configurations import Configuration, values
 
 
@@ -43,9 +44,10 @@ class Common(Configuration):
         # Third-party apps
         "django_extensions",
         "rest_framework",
-        "taggit",
+        "rest_framework_api_key",
         "graphene_django",
         "cachalot",
+        "drf_spectacular",
         #
         # Local apps
         "apps.authentication",
@@ -131,6 +133,13 @@ class Common(Configuration):
             "rest_framework_simplejwt.authentication.JWTAuthentication",
             "rest_framework.authentication.SessionAuthentication",
         ],
+        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    }
+
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "TajrobeKon",
+        "DESCRIPTION": "share your personal experiences and learn from others",
+        "VERSION": "1.0.0",
     }
 
     GRAPHENE = {"SCHEMA": "config.graphql.schema.schema"}

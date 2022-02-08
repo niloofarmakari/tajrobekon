@@ -1,8 +1,7 @@
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from taggit.managers import TaggableManager
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class ExperienceCategory(models.Model):
@@ -30,19 +29,10 @@ class ExperienceCategory(models.Model):
 
 
 class Experience(models.Model):
-    class TypeChoices(models.TextChoices):
-        FREE = "free", _("Free")
-        QUOTE = "quote", _("Quote")
-
-    type = models.CharField(
-        max_length=10, choices=TypeChoices.choices, default=TypeChoices.FREE, verbose_name=_("Experience Type")
-    )
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     category = models.ForeignKey(ExperienceCategory, verbose_name=_("Experience Category"), on_delete=models.CASCADE)
     description = models.TextField(verbose_name=_("Experience Description"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Experience publish time"))
-
-    tags = TaggableManager()
 
     def __str__(self):
         return f"{self.user} - {self.category}"
@@ -58,9 +48,16 @@ class Experience(models.Model):
         }
 
     def get_similar(self):
-        vector = SearchVector("description", "tags__name", "category__name")
-        query = SearchQuery(self.description)
-        return Experience.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gt=0).order_by("-rank")
+        return (
+            Experience.objects.annotate(
+                rank=SearchRank(
+                    SearchVector("description", "category__name", "category__slug"), SearchQuery(self.description)
+                )
+            )
+            .filter(rank__gt=0.001)
+            .exclude(id=self.id)
+            .order_by("-rank")[:5]
+        )
 
     class Meta:
         verbose_name = _("Experience")

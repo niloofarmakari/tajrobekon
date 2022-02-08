@@ -1,21 +1,23 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 
+from ..models import Experience, ExperienceCategory, ExperienceComment
 from .serializers import (
     ExperienceCategorySerializer,
+    ExperienceCommentSerializer,
     ExperienceDetailSerializer,
     ExperienceSerializer,
-    ExperienceCommentSerializer,
 )
-from ..models import Experience, ExperienceCategory, ExperienceComment
 
 
 class CustomPageNumberPagination(PageNumberPagination):
     page_size = 20
 
 
-class ExperienceCategoryList(ListCreateAPIView):
+class ExperienceCategoryList(ListAPIView):
+    """Get List of Experience Categories"""
+
     model = ExperienceCategory
     queryset = ExperienceCategory.objects.all()
     serializer_class = ExperienceCategorySerializer
@@ -23,22 +25,28 @@ class ExperienceCategoryList(ListCreateAPIView):
 
 
 class ExperienceListCreate(ListCreateAPIView):
+    """Get all experiences or create a new one"""
+
     model = Experience
-    queryset = Experience.objects.all().select_related("user").prefetch_related("tags", "comments__user")
+    queryset = Experience.objects.all().select_related("user").prefetch_related("comments__user")
     serializer_class = ExperienceSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = CustomPageNumberPagination
 
 
 class MyExperienceList(ListAPIView):
+    """Experiences created by the current user"""
+
     serializer_class = ExperienceSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Experience.objects.filter(user=self.request.user).select_related("category").prefetch_related("tags")
+        return Experience.objects.filter(user=self.request.user).select_related("category")
 
 
 class ExperienceDetail(RetrieveAPIView):
+    """Get experience detail by id"""
+
     model = Experience
     queryset = Experience.objects.all().select_related("user", "category").prefetch_related("comments__user")
     serializer_class = ExperienceDetailSerializer
@@ -46,6 +54,8 @@ class ExperienceDetail(RetrieveAPIView):
 
 
 class ExperienceComments(ListCreateAPIView):
+    """Get comments for an experience or create a new comment for it"""
+
     serializer_class = ExperienceCommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 

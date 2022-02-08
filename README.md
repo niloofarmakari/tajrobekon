@@ -1,6 +1,6 @@
 # Tajrobe Kon (Experience Sharing Platform)
 
-You can share your personal experiences and learn from others.
+Share your personal experiences and learn from others.
 
 An overview of primary models:
 

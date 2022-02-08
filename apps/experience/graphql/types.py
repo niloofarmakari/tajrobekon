@@ -1,18 +1,11 @@
 import json
+
 import graphene
 import graphene_django_optimizer as gql_optimizer
-
 from django.contrib.auth import get_user_model
-from taggit.models import Tag
 from graphene_django.types import DjangoObjectType
 
-from ..models import Experience, ExperienceComment, ExperienceCategory
-
-
-class ExperienceTagType(DjangoObjectType):
-    class Meta:
-        model = Tag
-        fields = ["name", "slug"]
+from ..models import Experience, ExperienceCategory, ExperienceComment
 
 
 class ExperienceCategoryType(DjangoObjectType):
@@ -44,7 +37,6 @@ class ExperienceCommentType(DjangoObjectType):
 
 class ExperienceType(gql_optimizer.OptimizedDjangoObjectType):
     comments = graphene.List(ExperienceCommentType)
-    tags = graphene.List(ExperienceTagType)
     schema = graphene.String()
 
     class Meta:
@@ -60,10 +52,6 @@ class ExperienceType(gql_optimizer.OptimizedDjangoObjectType):
     @gql_optimizer.resolver_hints(prefetch_related=("comments__user",))
     def resolve_comments(experience: Experience, info, **kwargs):
         return experience.comments.all()
-
-    @gql_optimizer.resolver_hints(prefetch_related=("tags",))
-    def resolve_tags(experience: Experience, info, **kwargs):
-        return experience.tags.all()
 
     @gql_optimizer.resolver_hints(select_related=("category", "user"), prefetch_related=("comments__user", "tags"))
     def resolve_schema(experience: Experience, info, **kwargs):

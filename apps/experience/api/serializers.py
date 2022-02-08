@@ -2,10 +2,10 @@ import json
 
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
-from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 from apps.authentication.api.serializers import UserSerializer
-from ..models import ExperienceCategory, Experience, ExperienceComment
+
+from ..models import Experience, ExperienceCategory, ExperienceComment
 
 
 class ExperienceCategorySerializer(serializers.ModelSerializer):
@@ -29,20 +29,21 @@ class ExperienceCategoryForeignKey(serializers.PrimaryKeyRelatedField):
         return ExperienceCategory.objects.all()
 
 
-class ExperienceSerializer(TaggitSerializer, serializers.ModelSerializer):
+class ExperienceSerializer(serializers.ModelSerializer):
     category = ExperienceCategoryForeignKey()
-    tags = TagListSerializerField()
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user_info = UserSerializer(read_only=True, source="user")
 
     class Meta:
         model = Experience
-        fields = ["id", "type", "category", "description", "tags", "user"]
+        fields = ["id", "category", "description", "user", "user_info"]
 
 
-class ExperienceDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
+class ExperienceDetailSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user_info = UserSerializer(read_only=True, source="user")
     comments = ExperienceCommentSerializer(read_only=True, many=True)
+    similar = ExperienceSerializer(source="get_similar", read_only=True, many=True)
     schema = serializers.SerializerMethodField()
 
     def get_schema(self, experience: Experience):
@@ -50,12 +51,10 @@ class ExperienceDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Experience
-        fields = ["id", "type", "category", "description", "tags", "user", "comments", "schema"]
+        fields = ["id", "category", "description", "similar", "user", "user_info", "comments", "schema"]
 
 
 class ExperienceCommentSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
     class Meta:
         model = ExperienceComment
         fields = ["id", "user", "comment"]
