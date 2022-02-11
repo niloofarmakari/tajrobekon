@@ -52,6 +52,7 @@ class Common(Configuration):
         # Local apps
         "apps.authentication",
         "apps.experience",
+        "apps.index",
     ]
 
     MIDDLEWARE = [
