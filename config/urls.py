@@ -2,12 +2,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
-
-from .graphql.view import CustomGraphQLView
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("graphql/", CustomGraphQLView.as_view(graphiql=True)),
+    path("graphql/", GraphQLView.as_view(graphiql=True)),
     path("experiences/", include("apps.experience.urls")),
     path("auth/", include("apps.authentication.urls")),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),

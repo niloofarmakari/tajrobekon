@@ -18,17 +18,15 @@ class CustomPageNumberPagination(PageNumberPagination):
 class ExperienceCategoryList(ListAPIView):
     """Get List of Experience Categories"""
 
-    model = ExperienceCategory
     queryset = ExperienceCategory.objects.all()
     serializer_class = ExperienceCategorySerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
 
 class ExperienceListCreate(ListCreateAPIView):
     """Get all experiences or create a new one"""
 
-    model = Experience
-    queryset = Experience.objects.all().select_related("user").prefetch_related("comments__user")
+    queryset = Experience.objects.all().select_related("user").select_related("category")
     serializer_class = ExperienceSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = CustomPageNumberPagination
@@ -47,7 +45,6 @@ class MyExperienceList(ListAPIView):
 class ExperienceDetail(RetrieveAPIView):
     """Get experience detail by id"""
 
-    model = Experience
     queryset = Experience.objects.all().select_related("user", "category").prefetch_related("comments__user")
     serializer_class = ExperienceDetailSerializer
     permission_classes = [AllowAny]

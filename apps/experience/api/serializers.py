@@ -1,7 +1,6 @@
 import json
 
 from rest_framework import serializers
-from rest_framework.fields import ReadOnlyField
 
 from apps.authentication.api.serializers import UserSerializer
 
@@ -9,19 +8,17 @@ from ..models import Experience, ExperienceCategory, ExperienceComment
 
 
 class ExperienceCategorySerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
     class Meta:
         model = ExperienceCategory
-        fields = ["name", "slug", "description", "user"]
+        fields = ["name", "slug", "description"]
 
 
 class ExperienceCommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user_info = UserSerializer(read_only=True, source="user")
 
     class Meta:
         model = ExperienceComment
-        fields = ["id", "user", "comment"]
+        fields = ["id", "user_info", "comment"]
 
 
 class ExperienceCategoryForeignKey(serializers.PrimaryKeyRelatedField):
@@ -40,7 +37,6 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
 
 class ExperienceDetailSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     user_info = UserSerializer(read_only=True, source="user")
     comments = ExperienceCommentSerializer(read_only=True, many=True)
     similar = ExperienceSerializer(source="get_similar", read_only=True, many=True)
@@ -51,10 +47,4 @@ class ExperienceDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Experience
-        fields = ["id", "category", "description", "similar", "user", "user_info", "comments", "schema"]
-
-
-class ExperienceCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExperienceComment
-        fields = ["id", "user", "comment"]
+        fields = ["id", "category", "description", "similar", "user_info", "comments", "schema"]

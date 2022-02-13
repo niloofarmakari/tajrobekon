@@ -68,5 +68,5 @@ django-admin compilemessages -l fa
 ### Generate Diagram
 
 ```
-python manage.py graph_models experience -o docs/images/experience.png
+python manage.py graph_models -a -E -X AbstractUser,AbstractAPIKey,AbstractBaseSession,LogEntry,ContentType -o docs/images/experience.png
 ```
