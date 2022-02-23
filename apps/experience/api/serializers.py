@@ -14,11 +14,12 @@ class ExperienceCategorySerializer(serializers.ModelSerializer):
 
 
 class ExperienceCommentSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     user_info = UserSerializer(read_only=True, source="user")
 
     class Meta:
         model = ExperienceComment
-        fields = ["id", "user_info", "comment"]
+        fields = ["id", "user", "user_info", "comment"]
 
 
 class ExperienceCategoryForeignKey(serializers.PrimaryKeyRelatedField):
