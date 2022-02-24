@@ -53,6 +53,6 @@ class ExperienceType(gql_optimizer.OptimizedDjangoObjectType):
     def resolve_comments(experience: Experience, info, **kwargs):
         return experience.comments.all()
 
-    @gql_optimizer.resolver_hints(select_related=("category", "user"), prefetch_related=("comments__user", "tags"))
+    @gql_optimizer.resolver_hints(select_related=("category", "user"), prefetch_related=("comments__user",))
     def resolve_schema(experience: Experience, info, **kwargs):
         return json.dumps(experience.get_schema(), ensure_ascii=False)

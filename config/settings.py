@@ -29,7 +29,7 @@ class Common(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
 
-    ALLOWED_HOSTS = values.ListValue([])
+    ALLOWED_HOSTS = values.ListValue(["127.0.0.1"])
 
     # Application definition
 
@@ -154,8 +154,6 @@ class Development(Common):
     """
 
     DEBUG = True
-
-    ALLOWED_HOSTS = []
 
     INTERNAL_IPS = ["127.0.0.1"]
 
