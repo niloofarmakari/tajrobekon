@@ -43,7 +43,7 @@ class ExperienceDetailSerializer(serializers.ModelSerializer):
     similar = ExperienceSerializer(source="get_similar", read_only=True, many=True)
     schema = serializers.SerializerMethodField()
 
-    def get_schema(self, experience: Experience):
+    def get_schema(self, experience: Experience) -> str:
         return json.dumps(experience.get_schema(), ensure_ascii=False)
 
     class Meta:

@@ -11,7 +11,7 @@ from ..models import Experience, ExperienceCategory, ExperienceComment
 class ExperienceCategoryType(DjangoObjectType):
     class Meta:
         model = ExperienceCategory
-        fields = ["id", "name", "slug", "description", "created_at"]
+        fields = ["name", "slug", "description", "created_at"]
 
 
 class ExperienceUser(DjangoObjectType):
