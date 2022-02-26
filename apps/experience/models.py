@@ -49,11 +49,7 @@ class Experience(models.Model):
 
     def get_similar(self):
         return (
-            Experience.objects.annotate(
-                rank=SearchRank(
-                    SearchVector("description", "category__name", "category__slug"), SearchQuery(self.description)
-                )
-            )
+            Experience.objects.annotate(rank=SearchRank(SearchVector("description"), SearchQuery(self.description)))
             .filter(rank__gt=0.001)
             .exclude(id=self.id)
             .order_by("-rank")[:5]

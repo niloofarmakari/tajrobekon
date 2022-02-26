@@ -22,13 +22,7 @@ class ExperienceCommentSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "user_info", "comment"]
 
 
-class ExperienceCategoryForeignKey(serializers.PrimaryKeyRelatedField):
-    def get_queryset(self):
-        return ExperienceCategory.objects.all()
-
-
 class ExperienceSerializer(serializers.ModelSerializer):
-    category = ExperienceCategoryForeignKey()
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     user_info = UserSerializer(read_only=True, source="user")
 

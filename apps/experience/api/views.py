@@ -26,7 +26,7 @@ class ExperienceCategoryList(ListAPIView):
 class ExperienceListCreate(ListCreateAPIView):
     """Get all experiences or create a new one"""
 
-    queryset = Experience.objects.all().select_related("user").select_related("category")
+    queryset = Experience.objects.all().select_related("user", "category")
     serializer_class = ExperienceSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = CustomPageNumberPagination
