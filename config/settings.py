@@ -29,7 +29,7 @@ class Common(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
 
-    ALLOWED_HOSTS = values.ListValue(["127.0.0.1"])
+    ALLOWED_HOSTS = values.ListValue(["127.0.0.1", "localhost"])
 
     # Application definition
 
